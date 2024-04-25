@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-database.js"></script>
+    
+    <title>Assistant Admin</title>
+</head>
+<body>
+    <h1>ahmed</h1>
+</body>
+<script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyAazLSrBxTyHTkij1gEEuAoJ1xZEv3Lgu4",
+  authDomain: "camplain-app.firebaseapp.com",
+  databaseURL: "https://camplain-app-default-rtdb.firebaseio.com",
+  projectId: "camplain-app",
+  storageBucket: "camplain-app.appspot.com",
+  messagingSenderId: "510244691855",
+  appId: "1:510244691855:web:7c39ccf3f27d8c5edcf5fa",
+  measurementId: "G-G357E100KJ",
+};
+const fb = firebase.initializeApp(firebaseConfig);
+const database=firebase.database()
+  const email ="ahmedwma123@gmail.com"
+  const usersRef=database.ref("Complain")
+  const Databack=(data)=>{
+    if(data.val()){
+        const userData=data.val();
+        const complain=userData.complain
+        if(complain){
+            const list=document.createElement("li")
+            list.textContent=complain
+            document.body.appendChild(list)
+            // document.write(complain)
+        }
+        else{
+            document.write("no complain")
+        }
+    }
+    else{
+        document.write("User not found")
+    }
+  }
+  usersRef.orderByChild("email").equalTo(email).on("child_added",Databack)
+  
+  
+  
+    
+
+
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-database.js"></script>
+    <title>SMIT COMPLAIN PORTAL</title>
+    <!-- admin@gmail.com -->
+    <!-- admin12345 -->
+    <!-- assistantadmin@gmail.com -->
+    <!-- assistantadmin -->
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h2><img src="./Untitled.png" style="border-radius: 50%;width: 60px;padding-top: 6px;" alt=""></h2>
+            <!-- <h2>SMIT COMPLAIN PORTAL</h2> -->
+            <div class="navigation">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a></div>
+            <div class="navigation_btn">
+                <button id="sign_btn">Sign Up</button>
+            <button id="log_btn">Login</button>
+        </div>
+        </nav>
+    </header>
+    <marquee class="animate">SMIT STUDENT COMPLAIN PORTAL</marquee>
+        <div class="grand_parent" style="display: none;"  id="display">
+    <div class="parent" >
+        <div class="form">
+            <h2>Login</h2>
+            <form action="#">
+                <div class="box">
+                    <span class="icon"><img src="./icons8-email-48.png" alt="" height="20px"></span>
+                    <input type="email" name="" id="email1" required>
+                    <label>Email</label>
+                </div>
+                <div class="box">
+                    <span class="icon"><img src="./icons8-lock-30.png" alt="" height="20pxs"></span>
+                    <input type="password" name="" id="pass1" required>
+                    <label>Password</label>
+                </div>
+                <div class="chkbox">
+                    <input type="checkbox" name="" id="">
+                    <label>Remember me</label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button class="btn" id="redirect" type="submit" onclick="signIn()">Login</button>
+                <div class="register"><p>Don't have an account? <a href="#" id="register">Sign up</a></p></div>
+            </form>
+        </div>
+    </div></div>
+            <div class="grand_parent_re" id="display1">
+        <div class="parent_re"  >
+        <div class="form_register">
+            <h2>Sign up</h2>
+            <form action="#">
+                <div class="box">
+                    <span class="icon"><img src="./icons8-email-48.png" alt="" height="20px"></span>
+                    <input type="email" name="" id="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="box">
+                    <span class="icon"><img src="./icons8-username-30.png" alt="" height="20px"></span>
+                    <input type="text" name="" id="userName " required>
+                    <label>Username</label>
+                </div>
+                <div class="box">
+                    <span class="icon"><img src="./icons8-lock-30.png" alt="" height="20pxs"></span>
+                    <input type="password" name="" id="pass" required>
+                    <label>Password</label>
+                </div>
+                <div class="chkbox">
+                    <input type="checkbox" name="" id="">
+                    <label class="re">I agree with the terms and conditions</label>
+                </div>
+                <button class="btn" type="submit" onclick="signUp()">Sign up</button>
+                <div class="register"><p>Already have an account? <a href="#" id="login">Login</a></p></div>
+            </form>
+        </div>
+    </div>
+</div>
+    <script src="node.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto:wght@300&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-database.js"></script>
+
+  <title>Document</title>
+</head>
+<style>
+      * {
+      font-family: "Poppins", sans-serif;
+      font-family: "Roboto", sans-serif;
+      margin: 0px;
+      padding: 0px;
+    }
+    .nav {
+      width: 100%;
+      height: 10vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(9, 57, 88);
+      color: white;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 34px;
+
+    }
+    p{
+      margin-top: 100px;
+    }
+    table {
+      border: 1px solid black;
+    }
+    .table{
+      /* margin: auto; */
+      display: flex;
+      justify-content: center;
+    }
+td{
+  width: 200px;
+}
+td{
+  width: 200px;
+  text-align: center;
+}
+.animate{
+  background-color: black;
+  color: white;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-spacing: 8px;
+  position: absolute;
+}
+.res {
+      margin: auto;
+      /* width: 130px; */
+      /* height: 37px; */
+      /* font-size: 14px; */
+      position: relative;
+      top: -10px;
+      padding: 10px;
+      border: 0px;
+      border-radius: 7px;
+      outline: none;
+      background-color: rgb(9, 57, 88);
+      color: white;
+      transition: 0.5s;
+    }
+    .res:hover {
+      background-color: rgb(1, 19, 51);
+      color: white;
+    }
+.rej {
+      margin: auto;
+      position: relative;
+      top: -10px;
+      padding: 10px;
+      border: 0px;
+      border-radius: 7px;
+      outline: none;
+      background-color: rgb(9, 57, 88);
+      color: white;
+      transition: 0.5s;
+    }
+    .rej:hover {
+      background-color: rgb(1, 19, 51);
+      color: white;
+    }
+
+
+</style>
+<body>
+  <nav>
+    <div class="nav">Admin Portal</div>
+    <marquee class="animate" behavior="" direction="">Assistant Admin doesn't respond to these complains</marquee>
+<p id="displayArea"></p>
+  </nav>
+  <script>
+                const firebaseConfig = {
+  apiKey: "AIzaSyAazLSrBxTyHTkij1gEEuAoJ1xZEv3Lgu4",
+  authDomain: "camplain-app.firebaseapp.com",
+  databaseURL: "https://camplain-app-default-rtdb.firebaseio.com",
+  projectId: "camplain-app",
+  storageBucket: "camplain-app.appspot.com",
+  messagingSenderId: "510244691855",
+  appId: "1:510244691855:web:7c39ccf3f27d8c5edcf5fa",
+  measurementId: "G-G357E100KJ"
+};
+const fb = firebase.initializeApp(firebaseConfig);
+
+    const DayInMillis = 0.01 * 60 * 60 * 1000;
+    const currentTimestamp = Date.now();
+    // const fb = firebase.initializeApp(firebaseConfig);
+    const userRef=firebase.database().ref("Complain");
+    userRef.on("child_added",(snapshot)=>{
+    const userData=snapshot.val()
+    console.log("userData:",userData)
+    // console.log("Date:",userData.date)
+    const complaintData = userData.date;
+    console.log("complaintData:",complaintData)
+    console.log("complainttIMESTAMP:",currentTimestamp)
+    console.log("DayInMillis:",DayInMillis)
+    // const timestamp = complaintData.timestamp;
+    const complaintTime = currentTimestamp - complaintData;
+    console.log("complainttIME:",complaintTime)
+      console.log(userData.status)
+    if(userData.status === 'Pending' && complaintTime > DayInMillis){
+      // alert("Aa")
+const displayArea=  document.getElementById("displayArea")
+displayArea.innerHTML+=`<div class="table"><table><tr><th>Name</th><th>Course</th><th>Roll No</th><th>Complain</th></tr><tr><td>${userData.name}</td><td>${userData.course}</td><td>${userData.rollno}</td><td>${userData.complain}</td><td><input id=${userData.key} class="res" type="submit" onclick="resolve1(this.id)" value="Resolve"></td><td><input id=${userData.key} onclick="reject1(this.id)" class="rej" type="submit"  value="Reject"></td></tr></table></div>`
+}
+})
+async function resolve1(id){
+console.log(id)
+  var userRef=firebase.database().ref('Complain/'+id);
+  await userRef.update({
+    status:"Resolved"
+  })
+  alert("Resolved")
+  location.reload()
+  
+}
+async function reject1(id){
+  var userRef=firebase.database().ref("Complain/"+id);
+  await  userRef.update({
+    status:"Reject"
+  })
+  alert("Rejected")
+  location.reload()
+}
+
+  </script>
+</body>
+</html>
+
+

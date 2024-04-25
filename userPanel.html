@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-database.js"></script>
+
+    <title>Assistant Admin</title>
+  </head>
+  <style>
+    * {
+      font-family: "Poppins", sans-serif;
+      font-family: "Roboto", sans-serif;
+      margin: 0px;
+      padding: 0px;
+    }
+    .nav {
+      width: 100%;
+      height: 10vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(9, 57, 88);
+      color: white;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 34px;
+
+    }    
+
+    .table{
+        padding-top: 10px;
+        padding-left: 20px;
+        position: relative;
+        width: 387px;
+        height: 405px;
+    background: transparent;
+    border: 2px solid rgb(22, 21, 21);
+    border-radius: 6px;
+    margin: auto;
+    margin-top: 50px;
+    }
+    td{
+        font-size: 18px;
+        font-weight: 500;
+    }
+    td input{
+        height: 30px;
+        width: 260px;
+        font-size: 12px;
+        padding-left: 5px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border: 1px solid black ;
+        margin-left: 5px;
+    }
+    #btn {
+      margin: auto;
+      width: 130px;
+      height: 37px;
+      font-size: 14px;
+      border: 0px;
+      border-radius: 7px;
+      outline: none;
+      /* background-color: rgb(9, 57, 88); */
+      background-color: black;
+      color: white;
+      transition: 0.5s;
+    }
+    /* #btn:hover {
+      background-color: rgb(1, 19, 51);
+      color: white;
+    } */
+    #Popup1 {
+      /* display: block; */
+      margin: auto;
+      width: 130px;
+      height: 37px;
+      font-size: 14px;
+      border: 0px;
+      border-radius: 7px;
+      outline: none;
+      /* background-color: rgb(9, 57, 88); */
+      background-color: black;
+      color: white;
+      transition: 0.5s;
+    }
+    /* #Popup1:hover {
+      background-color: rgb(1, 19, 51);
+      color: white;
+    } */
+    .chkbtn {
+      margin-top: 10px;
+      margin-left: 40px;
+      /* padding: 0px 10px; */
+    }
+.parentBtn{
+      display: flex;
+      /* justify-content: space-around; */
+      /* padding: 0px 60px; */
+      /* align-items: center; */
+      margin-top: 12px;
+}
+    /* Styles for the popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 20px;
+      width: 80%;
+      max-width: 400px;
+      margin: 10% auto;
+    }
+
+    /* Style the close button */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #status {
+      border: 1px solid black;
+      padding: 2px;
+      margin-bottom: 10px;
+      display: inline-block;
+      font-size: 14px;
+    }
+    .chkLi {
+      /* display: flex; */
+      /* color: red; */
+      margin-bottom: 10px;
+    }
+  </style>
+  <body>
+    <nav>
+      <div class="nav">Student Complain Portal</div>
+    </nav>
+<div class="table">
+      <table>
+        <tr>
+          <td><p>Name:</p></td>
+          <td><input required type="text" placeholder="Name" id="name" /></td>
+        </tr>
+        <tr>
+          <td><p>Roll No:</p></td>
+          <td>
+            <input required type="text" placeholder="Roll no" id="rollNo" />
+          </td>
+        </tr>
+        <tr>
+          <td><p>Email:</p></td>
+          <td>
+            <input required type="email" placeholder="Email" id="userEmail" />
+          </td>
+        </tr>
+        <tr>
+          <td><p>Course:</p></td>
+          <td>
+            <input required type="text" placeholder="Course" id="course" />
+          </td>
+        </tr>
+        <tr>
+          <td><p>Complain:</p></td>
+          <td>
+            <input required type="text" placeholder="Complain" id="complain" />
+          </td>
+        </tr>
+      </table>
+      <div class="parentBtn">
+        <div class="chkbtn">
+          <input
+            id="Popup1"
+            type="submit"
+            onclick="chkData()"
+            value="Complain Status"
+            />
+          </div>
+        <div class="chkbtn">
+        <input
+          id="btn"
+          type="submit"
+          onclick="submitDetails()"
+          value="Submit Complain"
+        /></div>
+      </div>
+</div>
+
+    <!-- <button id="openPopupButton">Open Popup</button> -->
+
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <ul id="popData">
+          <!-- <span class="status">pending</span> -->
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // alert=("A")
+      const firebaseConfig = {
+        apiKey: "AIzaSyAazLSrBxTyHTkij1gEEuAoJ1xZEv3Lgu4",
+        authDomain: "camplain-app.firebaseapp.com",
+        databaseURL: "https://camplain-app-default-rtdb.firebaseio.com",
+        projectId: "camplain-app",
+        storageBucket: "camplain-app.appspot.com",
+        messagingSenderId: "510244691855",
+        appId: "1:510244691855:web:7c39ccf3f27d8c5edcf5fa",
+        measurementId: "G-G357E100KJ",
+      };
+      const fb = firebase.initializeApp(firebaseConfig);
+      var dbRef = firebase.database().ref("userComplains")
+      firebase.auth().onAuthStateChanged(function (user) {
+      // let uniEmail;
+      var user1=user
+      window.user1=user1
+      console.log(user1)
+        if (user) {
+          var uniEmail = user.email;
+          // alert("A")
+          window.uniEmail = uniEmail;
+          console.log(uniEmail);
+        } else {
+          uniEmail = null;
+          console.log("Fetching Email error");
+        }
+      });
+      const name1 = document.getElementById("name");
+      const userEmail1 = document.getElementById("userEmail");
+      const rollno1 = document.getElementById("rollNo");
+      const course1 = document.getElementById("course");
+      const complain1 = document.getElementById("complain");
+      function submitDetails(user) {
+        if (
+          name1.value !== "" &&
+          rollno1.value !== "" &&
+          course1.value !== "" &&
+          complain1.value !== "" &&
+          userEmail1.value === uniEmail
+        ) {
+          const name = document.getElementById("name").value;
+          const userEmail = document.getElementById("userEmail").value;
+          const rollno = document.getElementById("rollNo").value;
+          const course = document.getElementById("course").value;
+          const complain = document.getElementById("complain").value;
+          const timestamp = firebase.database.ServerValue.TIMESTAMP;
+          const date = new Date();          
+          const key =fb.database().ref("complain").push().key;
+          // console.log(user)
+          // console.log(user1)
+          // const key =user1.uid;
+          const status= "Pending";
+          userdetails = {
+            name: name,
+            email: userEmail,
+            rollno: rollno,
+            course: course,
+            complain: complain,
+            date: date.getTime(),
+            status:status,
+            key:key,
+            timestamp:timestamp
+          };
+          fb.database().ref("Complain").child(key).set(userdetails);
+          // dbRef.child(user1.uid).set(userdetails)
+          document.getElementById("name").value = "";
+          document.getElementById("userEmail").value = "";
+          document.getElementById("rollNo").value = "";
+          document.getElementById("course").value = "";
+          document.getElementById("complain").value = "";
+          alert("Complain has been submitted");
+          // window.location.href="index.html"
+        } else {
+          alert("Please Enter correct Email or Details!");
+        }
+      }
+      function chkData() {
+        const database = firebase.database();
+        //   const email ="ahmedwma123@gmail.com"
+        // const email = "12345678@gmail.com";
+        const email = uniEmail;
+        // const usersRef = database.ref("Complain");
+        const usersRef = database.ref("Complain");
+        const popupData = document.getElementById(popData);
+        const Databack = (data) => {
+          if (data.val()) {
+            const userData = data.val();
+            const complain = userData.complain;
+            const status1 = userData.status;
+            if (complain) {
+              const list = document.createElement("li");
+              list.setAttribute("class", "chkLi");
+              list.textContent = complain;
+              popData.appendChild(list);
+              const text = document.createElement("span");
+              text.setAttribute("class", "statusText");
+              text.textContent = "Complain Status : ";
+              popData.appendChild(text);
+              const status = document.createElement("div");
+              status.setAttribute("id", "status");
+              status.setAttribute("class", "status12");
+              status.textContent = status1;
+              popData.appendChild(status);
+            } else {
+              document.write("no complain");
+            }
+          } else {
+            document.write("User not found");
+          }
+        };
+        usersRef
+          .orderByChild("email")
+          .equalTo(email)
+          .on("child_added", Databack);
+      }
+      const Popup1 = document.getElementById("Popup1");
+      const popup = document.getElementById("popup");
+      function showPopup() {
+        popup.style.display = "block";
+      }
+      function closePopup() {
+        popup.style.display = "none";        
+clearData()
+}
+function clearData(){
+  location.reload()
+//   let popup=document.getElementById("popData")
+// var li = document.getElementsByClassName("chkLi");
+// for (var i = 0; i < li.length+2; i++) {
+//   // alert("A");
+//   const list = document.querySelector("#popData li");
+//   popup.removeChild(list)
+// }
+// var span = document.getElementsByClassName("statusText");
+// for (var i = 0; i < span.length+2; i++) {
+//   const span = document.querySelector("#popData span");
+//   popup.removeChild(span)
+  
+//   // alert("A");
+// }
+// var div = document.getElementsByClassName("status12");
+// for (var i = 0; i < div.length+2; i++) {
+//   // alert("A");
+//    const div = document.querySelector("#popData div");
+//   popup.removeChild(div)
+
+// }
+
+  // const list = document.querySelector("#popData li");
+  // popup.removeChild(list)
+  // const span = document.querySelector("#popData span");
+  // popup.removeChild(span)
+  // const div = document.querySelector("#popData div");
+  // popup.removeChild(div)
+
+  }
+      Popup1.addEventListener("click", showPopup);
+    </script>
+  </body>
+</html>
